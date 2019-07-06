@@ -9,11 +9,15 @@ def extractFile(zFile, password):
     except: pass
 
 def main():
+    # Adding command line argments
     parser = optparse.OptionParser("usage%prog -f <zipfile> -d <dictionary>")
+    # File to be cracked
     parser.add_option('-f', dest='zname', type='string', help='specify zip file')
+    # Dictionary for list of passwords
     parser.add_option('-d', dest='dname', type='string', help='specify dictionary file')
     (options, args) = parser.parse_args()
-    if (options.zname == None) | (options.dname == None):
+    # Exit if file or dictionary not provided
+    if (options.zname == None) | (options.dname == None):       # 
         print (parser.usage)
         exit(0)
     else:
@@ -23,6 +27,7 @@ def main():
     passFile = open(dname)
     for line in passFile.readlines():
         password = line.strip('\n')
+        # New Thread for each password for concurrent cracking
         t = Thread(target=extractFile, args=(zFile, password))
         t.start()
 
